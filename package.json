@@ -1,0 +1,28 @@
+{
+  "name": "@plinth-dev/docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Source for the Plinth documentation site at https://plinth.run",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/starlight": "^0.38.4",
+    "astro": "^6.2.1",
+    "sharp": "^0.33.5",
+    "typescript": "^5.9.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0"
+  },
+  "packageManager": "pnpm@10.0.0"
+}
