@@ -1,6 +1,7 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+
 import starlight from "@astrojs/starlight";
+import { defineConfig } from "astro/config";
 
 export default defineConfig({
   site: "https://plinth.run",
@@ -16,7 +17,11 @@ export default defineConfig({
       },
       favicon: "/favicon.svg",
       social: [
-        { icon: "github", label: "GitHub", href: "https://github.com/plinth-dev" },
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/plinth-dev",
+        },
       ],
       editLink: {
         baseUrl: "https://github.com/plinth-dev/docs/edit/main/",
