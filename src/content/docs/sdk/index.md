@@ -34,4 +34,11 @@ The Plinth SDK is two language families that encode the platform contracts. Modu
 
 ## Status
 
-Phase B in progress. Per-package design ADRs land here as the API surfaces are locked. See the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md).
+**Phase B in progress.** Per-package design ADRs land here as the API surfaces are locked. The first four are drafts (the load-bearing fail-closed authorization stack and the typed-error vocabulary):
+
+- [`sdk-go/authz`](/sdk/go/authz/) — Cerbos PDP client, fail-closed `Decision`, batched checks
+- [`sdk-go/errors`](/sdk/go/errors/) — sentinel errors + RFC 7807 problem+json middleware
+- [`@plinth-dev/authz`](/sdk/ts/authz/) — server-only TypeScript mirror of `sdk-go/authz`
+- [`@plinth-dev/authz-react`](/sdk/ts/authz-react/) — client-side `<PermissionsProvider>`, `usePermissions()`, `<Can>`
+
+See the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md) for the rest.
