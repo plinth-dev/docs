@@ -27,12 +27,9 @@ export default defineConfig({
         baseUrl: "https://github.com/plinth-dev/docs/edit/main/",
       },
       lastUpdated: true,
-      head: [
-        {
-          tag: "meta",
-          attrs: { property: "og:image", content: "/og.png" },
-        },
-      ],
+      // OG image lands in Phase F — until then no og:image meta is set
+      // (better than a 404'd image). Re-enable when /og.png ships.
+      head: [],
       customCss: ["./src/assets/theme.css"],
       sidebar: [
         {
