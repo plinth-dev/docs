@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plinth Sketch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+  />
+  <style>
+    :root {
+      --sans: "IBM Plex Sans", -apple-system, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      --bg:           #FBFBF9;
+      --bg-soft:      #F4F3EE;
+      --bg-code:      #F4F1EA;
+      --ink:          #0F1012;
+      --ink-mute:     #5C5C60;
+      --ink-soft:     #8C8C90;
+      --accent:       #1B3A5C;
+      --accent-soft:  #3F6390;
+      --accent-low:   #DCE3EC;
+      --rule:         #E5E3DD;
+      --rule-firm:    #C8C4BB;
+      --toolbar-h: 48px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+    .toolbar {
+      height: var(--toolbar-h);
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+    }
+    .toolbar .group { display: flex; align-items: center; gap: 6px; }
+    .toolbar .group + .group {
+      margin-left: 8px;
+      padding-left: 16px;
+      border-left: 1px solid var(--rule-firm);
+    }
+    .toolbar .lbl {
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--ink-soft); margin-right: 6px;
+    }
+    .toolbar button, .toolbar select {
+      font-family: var(--sans);
+      font-size: 12.5px; font-weight: 500;
+      color: var(--ink); background: var(--bg);
+      border: 1px solid var(--rule-firm);
+      padding: 5px 12px; cursor: pointer;
+    }
+    .toolbar button:hover {
+      border-color: var(--accent); color: var(--accent);
+    }
+    .toolbar button.primary {
+      background: var(--accent); color: var(--bg); border-color: var(--accent);
+    }
+    .toolbar button.primary:hover { background: var(--accent-soft); }
+    .toolbar select { padding: 5px 8px; }
+    .toolbar .status {
+      margin-left: auto;
+      font-family: var(--mono); font-size: 11.5px;
+      color: var(--ink-mute); letter-spacing: 0.02em;
+    }
+    .toolbar .status .ok { color: var(--accent); }
+    .toolbar .status .err { color: #B43A3A; }
+    .editor {
+      display: grid;
+      grid-template-columns: 480px 1fr;
+      height: calc(100vh - var(--toolbar-h));
+    }
+    @media (max-width: 56rem) {
+      .editor { grid-template-columns: 1fr; }
+      .pane-edit textarea { min-height: 280px; }
+    }
+    .pane-edit {
+      border-right: 1px solid var(--rule);
+      background: var(--bg);
+      display: flex; flex-direction: column;
+    }
+    @media (max-width: 56rem) {
+      .pane-edit { border-right: none; border-bottom: 1px solid var(--rule); }
+    }
+    .pane-edit .header,
+    .pane-preview .header {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--rule);
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--ink-soft);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .pane-edit .header .meta,
+    .pane-preview .header .meta {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--ink-mute); font-weight: 400;
+      text-transform: none; letter-spacing: 0;
+    }
+    .pane-edit textarea {
+      flex: 1; width: 100%;
+      border: none; padding: 16px 18px;
+      font-family: var(--mono); font-size: 13.5px; line-height: 1.55;
+      color: var(--ink); background: var(--bg);
+      resize: none; outline: none; tab-size: 2;
+    }
+    .pane-preview {
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .pane-preview .canvas {
+      flex: 1; overflow: auto;
+      padding: 32px;
+      display: flex; align-items: flex-start; justify-content: center;
+      background: var(--bg);
+    }
+    .pane-preview .canvas svg { max-width: 100%; height: auto; display: block; }
+    .pane-preview .empty {
+      color: var(--ink-soft); font-style: italic; padding: 32px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <div class="group">
+      <span class="lbl">Example</span>
+      <select id="example">
+        <option value="plinth">Plinth substrate (this site)</option>
+        <option value="threetier">Three-tier web app</option>
+        <option value="empty">Empty</option>
+      </select>
+    </div>
+    <div class="group">
+      <button id="copy-svg">Copy SVG</button>
+      <button id="download-svg" class="primary">Download SVG</button>
+      <button id="copy-link">Copy share link</button>
+    </div>
+    <span class="status" id="status"><span class="ok">●</span> ready</span>
+  </div>
+
+  <div class="editor">
+    <section class="pane-edit" aria-label="DSL editor">
+      <header class="header">
+        Diagram source <span class="meta" id="lines">0 lines</span>
+      </header>
+      <textarea id="src" spellcheck="false" autocomplete="off" autocorrect="off" aria-label="Diagram source DSL"></textarea>
+    </section>
+    <section class="pane-preview" aria-label="SVG preview">
+      <header class="header">
+        Preview <span class="meta" id="meta">0 nodes · 0 edges</span>
+      </header>
+      <div class="canvas" id="canvas">
+        <span class="empty">Type something on the left to see a diagram.</span>
+      </div>
+    </section>
+  </div>
+
+<script type="module">
+import { parse, layout, render } from "https://esm.sh/@plinth-dev/sketch@0.1.0";
+
+const EXAMPLES = {
+  plinth: `# The Plinth substrate diagram from this site.
+# Edit any line — the preview updates as you type.
+
+@layer User module · example-access-requests
+web : starter-web / Next.js 16 · React 19
+api : starter-api / Go 1.25 · chi · pgx
+
+@layer SDK
+sdk-ts : sdk-ts · 7 packages / env · api-client · authz · forms · tables · …
+sdk-go : sdk-go · 7 packages / authz · audit · otel · errors · paginate · …
+
+@layer Substrate · Helm umbrella chart
+pg    : CloudNativePG / Postgres operator + cluster
+cerb  : Cerbos PDP / policy decisions · authz
+otel  : OpenTelemetry Collector / traces · metrics · logs
+
+@layer Foundation · Kubernetes
+k8s : Kubernetes / Any conformant distribution
+
+# Edges
+web -> api : HTTP · JSON
+web -> sdk-ts : imports
+api -> sdk-go : imports
+sdk-ts -> cerb
+sdk-go -> pg
+sdk-go -> cerb
+sdk-go -> otel
+pg -> k8s
+cerb -> k8s
+otel -> k8s
+`,
+  threetier: `# Three-tier web application
+
+@layer Client
+browser : Browser / SPA + traceparent
+
+@layer Edge
+cdn : CDN / TLS · cache
+gw  : API Gateway / OIDC · rate-limit
+
+@layer Application
+web : Web tier / Next.js · React 19
+api : API tier / Go · chi · pgx
+
+@layer Data
+db   : Postgres / OLTP
+redis: Redis / cache · queues
+s3   : Object storage / blobs
+
+browser -> cdn
+cdn -> gw : HTTP
+gw -> web
+gw -> api
+web -> api : SSR · forms
+api -> db
+api -> redis
+api -> s3
+`,
+  empty: `# Start typing.
+# Define nodes first, then group them into layers, then add edges.
+
+# @layer My layer
+# id : Label / optional sublabel
+# id_a -> id_b : edge label
+`,
+};
+
+const $ = (s) => document.querySelector(s);
+const srcEl = $('#src');
+const canvasEl = $('#canvas');
+const linesEl = $('#lines');
+const metaEl = $('#meta');
+const statusEl = $('#status');
+const exampleEl = $('#example');
+
+let lastSVG = '';
+
+function update() {
+  const text = srcEl.value;
+  linesEl.textContent = `${text.split('\n').length} lines`;
+  if (!text.trim()) {
+    canvasEl.innerHTML = '<span class="empty">Type something on the left to see a diagram.</span>';
+    metaEl.textContent = '0 nodes · 0 edges';
+    statusEl.innerHTML = '<span class="ok">●</span> ready';
+    return;
+  }
+  try {
+    const parsed = parse(text);
+    const lay = layout(parsed);
+    const svg = render(parsed, lay);
+    canvasEl.innerHTML = svg;
+    lastSVG = svg;
+    metaEl.textContent = `${parsed.nodeOrder.length} nodes · ${parsed.edges.length} edges`;
+    const missing = new Set();
+    for (const e of parsed.edges) {
+      if (!parsed.nodes[e.from]) missing.add(e.from);
+      if (!parsed.nodes[e.to]) missing.add(e.to);
+    }
+    if (parsed.errors.length) {
+      statusEl.innerHTML = `<span class="err">●</span> ${parsed.errors.length} unparsed line${parsed.errors.length === 1 ? '' : 's'}`;
+    } else if (missing.size) {
+      statusEl.innerHTML = `<span class="err">●</span> undefined node${missing.size === 1 ? '' : 's'}: ${[...missing].slice(0, 3).join(', ')}`;
+    } else {
+      statusEl.innerHTML = '<span class="ok">●</span> ok';
+    }
+  } catch (err) {
+    statusEl.innerHTML = '<span class="err">●</span> ' + err.message;
+  }
+}
+
+function loadExample(key) {
+  srcEl.value = EXAMPLES[key] || EXAMPLES.empty;
+  update();
+}
+
+exampleEl.addEventListener('change', (e) => loadExample(e.target.value));
+let timer = null;
+srcEl.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(update, 80); });
+
+function flashStatus(msg, isErr) {
+  const before = statusEl.innerHTML;
+  statusEl.innerHTML = (isErr ? '<span class="err">●</span> ' : '<span class="ok">●</span> ') + msg;
+  setTimeout(() => { statusEl.innerHTML = before; }, 1500);
+}
+
+$('#download-svg').addEventListener('click', () => {
+  if (!lastSVG) return;
+  const blob = new Blob([lastSVG], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'sketch.svg'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+$('#copy-svg').addEventListener('click', async () => {
+  if (!lastSVG) return;
+  try { await navigator.clipboard.writeText(lastSVG); flashStatus('SVG copied'); }
+  catch (e) { flashStatus('copy failed', true); }
+});
+
+$('#copy-link').addEventListener('click', async () => {
+  const enc = btoa(String.fromCharCode(...new TextEncoder().encode(srcEl.value)));
+  // Build the canonical /tools/sketch/ URL even when iframed
+  const base = 'https://plinth.run/tools/sketch/';
+  const url = base + '#d=' + enc;
+  try { await navigator.clipboard.writeText(url); flashStatus('share link copied'); }
+  catch (e) { flashStatus('copy failed', true); }
+});
+
+function loadFromHash() {
+  if (location.hash.startsWith('#d=')) {
+    try {
+      const bytes = Uint8Array.from(atob(location.hash.substring(3)), (c) => c.charCodeAt(0));
+      srcEl.value = new TextDecoder().decode(bytes);
+      update();
+      return true;
+    } catch (e) {}
+  }
+  return false;
+}
+
+if (!loadFromHash()) loadExample('plinth');
+</script>
+
+</body>
+</html>

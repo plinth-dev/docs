@@ -1,0 +1,43 @@
+---
+// Embeds an interactive tool (an HTML file in /public/) inside a Starlight page.
+// The iframe takes the full content width and a tall fixed height; on small
+// viewports we collapse the height so it remains usable.
+interface Props {
+  src: string;
+  title: string;
+  height?: string;
+}
+const { src, title, height = "min(78vh, 760px)" } = Astro.props as Props;
+---
+
+<div class="iframe-tool">
+  <iframe
+    src={src}
+    title={title}
+    style={`height: ${height}`}
+    loading="lazy"
+    sandbox="allow-scripts allow-same-origin allow-downloads"
+  ></iframe>
+</div>
+
+<style>
+  /* Break the iframe out of Starlight's content max-width so the tool gets a
+     wider area. Standard "full bleed" technique: width 100vw + negative
+     margin-left/right that compensates for the parent's offset. */
+  .iframe-tool {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    background: var(--sl-color-bg);
+    border-top: 1px solid var(--sl-color-hairline-shade);
+    border-bottom: 1px solid var(--sl-color-hairline-shade);
+    box-sizing: border-box;
+  }
+  .iframe-tool iframe {
+    width: 100%;
+    border: none;
+    display: block;
+  }
+</style>

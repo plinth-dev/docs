@@ -1,71 +1,64 @@
-/* Plinth — Manuscript theme for Starlight.
-   Warm aged-paper light mode (default), warm-leather dark mode (alternate).
-   Palette: cream paper / dark warm charcoal / single ochre accent.
-   Type:   Spectral throughout (display + body), IBM Plex Mono for code.
-   Vibe:   reads like a thoughtful book about computing, not a product page. */
+/* Plinth — Wide Platform v2 theme for Starlight.
+   Off-white (#FBFBF9) light + warm-charcoal dark.
+   Sober navy single accent (#1B3A5C). Italic em → navy.
+   IBM Plex Sans body + JetBrains Mono code. No serifs anywhere.
+   Reads as a serious technical platform — not a thesis. */
 
-/* ── Shared tokens (both themes) ─────────────────────────────────── */
+/* ── Shared tokens ───────────────────────────────────────────────── */
 :root {
-  --sl-font: "Spectral", "Iowan Old Style", Garamond, Georgia, serif;
+  --sl-font: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --sl-font-system: var(--sl-font);
-  --sl-font-system-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sl-font-system-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  --sl-content-width: 50rem;
-  --sl-line-height: 1.65;
+  --sl-content-width: 60rem;
+  --sl-line-height: 1.55;
   --sl-line-height-headings: 1.1;
-  --sl-text-base: 1.0625rem; /* 17px */
+  --sl-text-base: 1rem;
 
-  /* Manuscript ornamentation we'll reuse */
   --plinth-rule: 1px solid var(--sl-color-hairline);
 }
 
-/* Note: we don't override Starlight's `--sl-color-white|black|gray-*` ramp.
-   Starlight uses those semantically (gray-1 = highest-contrast text, gray-7 =
-   near-bg) and swaps them between light/dark. Overriding broke H1/H2 visibility
-   in light mode. We override only the warm palette tokens; Starlight handles
-   the contrast ladder. */
-
-/* ── Light theme — the manuscript ────────────────────────────────── */
+/* ── Light theme — Wide Platform v2 ──────────────────────────────── */
 :root,
 :root[data-theme="light"] {
-  --sl-color-bg: oklch(0.965 0.018 78);
-  --sl-color-bg-nav: oklch(0.95 0.02 78);
-  --sl-color-bg-sidebar: oklch(0.945 0.02 78);
-  --sl-color-bg-inline-code: oklch(0.92 0.04 75);
+  --sl-color-bg: #FBFBF9;
+  --sl-color-bg-nav: #FBFBF9;
+  --sl-color-bg-sidebar: #FBFBF9;
+  --sl-color-bg-inline-code: #F4F1EA;
 
-  --sl-color-text: oklch(0.24 0.025 50);
-  --sl-color-text-invert: oklch(0.965 0.018 78);
-  --sl-color-text-accent: oklch(0.5 0.15 55);
+  --sl-color-text: #0F1012;
+  --sl-color-text-invert: #FBFBF9;
+  --sl-color-text-accent: #1B3A5C;
 
-  --sl-color-accent: oklch(0.55 0.14 60);
-  --sl-color-accent-low: oklch(0.93 0.05 70);
-  --sl-color-accent-high: oklch(0.42 0.16 50);
+  --sl-color-accent: #1B3A5C;
+  --sl-color-accent-low: #DCE3EC;
+  --sl-color-accent-high: #3F6390;
 
-  --sl-color-border: oklch(0.85 0.03 78);
-  --sl-color-hairline: oklch(0.88 0.025 78);
-  --sl-color-hairline-light: oklch(0.92 0.02 78);
-  --sl-color-hairline-shade: oklch(0.82 0.03 78);
+  --sl-color-border: #E5E3DD;
+  --sl-color-hairline: #E5E3DD;
+  --sl-color-hairline-light: #F4F3EE;
+  --sl-color-hairline-shade: #C8C4BB;
 }
 
-/* ── Dark theme — warm leather, never blue-black ──────────────────── */
+/* ── Dark theme — warm charcoal ──────────────────────────────────── */
 :root[data-theme="dark"] {
-  --sl-color-bg: oklch(0.19 0.014 50);
-  --sl-color-bg-nav: oklch(0.22 0.014 50);
-  --sl-color-bg-sidebar: oklch(0.21 0.014 50);
-  --sl-color-bg-inline-code: oklch(0.27 0.015 50);
+  --sl-color-bg: #0F1012;
+  --sl-color-bg-nav: #14151A;
+  --sl-color-bg-sidebar: #14151A;
+  --sl-color-bg-inline-code: #1A1B20;
 
-  --sl-color-text: oklch(0.92 0.02 78);
-  --sl-color-text-invert: oklch(0.19 0.014 50);
-  --sl-color-text-accent: oklch(0.78 0.155 65);
+  --sl-color-text: #E8E6E1;
+  --sl-color-text-invert: #0F1012;
+  --sl-color-text-accent: #7BA3D6;
 
-  --sl-color-accent: oklch(0.72 0.155 60);
-  --sl-color-accent-low: oklch(0.32 0.05 60);
-  --sl-color-accent-high: oklch(0.88 0.13 70);
+  --sl-color-accent: #7BA3D6;
+  --sl-color-accent-low: #1F2A3A;
+  --sl-color-accent-high: #9BBADD;
 
-  --sl-color-border: oklch(0.32 0.014 50);
-  --sl-color-hairline: oklch(0.28 0.014 50);
-  --sl-color-hairline-light: oklch(0.25 0.014 50);
-  --sl-color-hairline-shade: oklch(0.36 0.014 50);
+  --sl-color-border: #22242A;
+  --sl-color-hairline: #22242A;
+  --sl-color-hairline-light: #1A1B20;
+  --sl-color-hairline-shade: #3A3D45;
 }
 
 /* ── Base ─────────────────────────────────────────────────────────── */
@@ -75,21 +68,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-wrap: pretty;
   font-feature-settings: "kern", "liga";
-}
-
-/* Subtle paper grain on light mode only — almost invisible, adds warmth. */
-:root[data-theme="light"] body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(oklch(0 0 0 / 0.012) 1px, transparent 1px),
-    radial-gradient(oklch(0 0 0 / 0.008) 1px, transparent 1px);
-  background-size: 4px 4px, 7px 7px;
-  background-position: 0 0, 2px 2px;
-  pointer-events: none;
-  z-index: 100;
-  mix-blend-mode: multiply;
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {
@@ -97,100 +76,108 @@ body {
   color: var(--sl-color-text-invert);
 }
 
-/* ── Site title (when no logo is set) ─────────────────────────────── */
+/* ── Site title (wordmark) ────────────────────────────────────────── */
 .site-title {
   font-family: var(--sl-font);
-  font-weight: 500;
-  font-size: 1.4rem;
+  font-weight: 600;
+  font-size: 1.05rem;
   letter-spacing: -0.01em;
+}
+.site-title::after {
+  content: ".";
+  color: var(--sl-color-text-accent);
 }
 
 /* ── Markdown content ─────────────────────────────────────────────── */
 .sl-markdown-content {
-  max-width: 65ch;
+  max-width: 64ch;
 }
 
 .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) {
   font-family: var(--sl-font);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.018em;
   line-height: var(--sl-line-height-headings);
   text-wrap: balance;
 }
-.sl-markdown-content h1 { font-size: 2.6rem; margin-bottom: 0.5rem; }
-.sl-markdown-content h2 { font-size: 1.8rem; margin-top: 3rem; }
-.sl-markdown-content h3 { font-size: 1.35rem; margin-top: 2rem; }
-.sl-markdown-content h4 { font-size: 1.1rem; margin-top: 1.5rem; }
+.sl-markdown-content h1 { font-size: 2.4rem; margin-bottom: 0.5rem; letter-spacing: -0.024em; }
+.sl-markdown-content h2 { font-size: 1.6rem; margin-top: 2.8rem; }
+.sl-markdown-content h3 { font-size: 1.2rem; margin-top: 1.8rem; }
+.sl-markdown-content h4 { font-size: 1.05rem; margin-top: 1.4rem; }
 
-/* Italic em — the manuscript's signature: ochre on italic */
+/* Italic em — the v2 signature: navy on italic */
 .sl-markdown-content em,
 .sl-markdown-content i {
   font-style: italic;
   color: var(--sl-color-text-accent);
+  font-weight: 500;
 }
 
-/* Strong — slightly heavier without colour shift */
 .sl-markdown-content strong {
   font-weight: 600;
   color: var(--sl-color-text);
 }
 
-/* Links — ochre, restrained underline */
+/* Links */
 .sl-markdown-content a {
   color: var(--sl-color-text-accent);
   text-decoration: underline;
-  text-decoration-color: var(--sl-color-accent-low);
+  text-decoration-color: var(--sl-color-hairline-shade);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
-  transition: text-decoration-color 0.15s;
+  transition: text-decoration-color 0.15s, color 0.15s;
 }
 .sl-markdown-content a:hover {
+  color: var(--sl-color-accent-high);
   text-decoration-color: var(--sl-color-accent);
 }
 
 /* Inline code */
 .sl-markdown-content code:not(pre code) {
   background: var(--sl-color-bg-inline-code);
-  padding: 0.5px 5px;
+  padding: 1px 5px;
   border-radius: 0;
-  font-size: 0.92em;
+  font-size: 0.86em;
   color: var(--sl-color-text);
 }
 
-/* Code blocks — accent rule on the left, like a margin annotation */
+/* Code blocks — top + bottom hairline rules, no left-border-accent */
 .sl-markdown-content pre,
 .sl-markdown-content .expressive-code {
-  border-left: 2px solid var(--sl-color-accent);
+  border-top: 1px solid var(--sl-color-hairline-shade);
+  border-bottom: 1px solid var(--sl-color-hairline-shade);
 }
 .sl-markdown-content pre {
   padding: 1rem 1.25rem;
 }
 
-/* Blockquotes — manuscript style, italic with accent rule */
+/* Blockquotes — minimalist, navy left rule */
 .sl-markdown-content blockquote {
   border-left: 2px solid var(--sl-color-accent);
   padding-left: 1.5rem;
   margin: 1.5rem 0;
   font-style: italic;
   color: var(--sl-color-text);
-  font-size: 1.08em;
+  font-size: 1rem;
   line-height: 1.55;
 }
 
-/* Tables */
+/* Tables — clean, two-rule (top header underline + final row) */
 .sl-markdown-content table {
   border-collapse: collapse;
-  font-size: 0.95em;
+  font-size: 0.94em;
   margin: 1.5rem 0;
   width: 100%;
 }
 .sl-markdown-content th {
-  font-weight: 500;
+  font-weight: 600;
   text-align: left;
-  border-bottom: 2px solid var(--sl-color-hairline-shade);
+  border-bottom: 2px solid var(--sl-color-text);
   padding: 10px 14px 10px 0;
   color: var(--sl-color-text);
-  font-style: italic;
+  font-size: 0.86em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .sl-markdown-content td {
   border-bottom: 1px solid var(--sl-color-hairline);
@@ -201,7 +188,6 @@ body {
   border-bottom: 1px solid var(--sl-color-hairline-shade);
 }
 
-/* Horizontal rule — minimal, like the page break in a book */
 .sl-markdown-content hr {
   border: none;
   border-top: 1px solid var(--sl-color-hairline-shade);
@@ -209,16 +195,12 @@ body {
   width: 100%;
 }
 
-/* Lists */
 .sl-markdown-content ul li,
 .sl-markdown-content ol li {
   margin: 0.4rem 0;
 }
-.sl-markdown-content ol {
-  font-variant-numeric: oldstyle-nums;
-}
 
-/* ── Sidebar (left nav) ──────────────────────────────────────────── */
+/* ── Sidebar ─────────────────────────────────────────────────────── */
 .sl-sidebar-state-persist nav,
 nav[aria-label="Main"] {
   font-family: var(--sl-font);
@@ -228,87 +210,79 @@ nav[aria-label="Main"] {
   background: var(--sl-color-bg-sidebar);
 }
 
-/* Group labels — italic, like a book's section heading */
 .sidebar-content details > summary,
 .sidebar-content .group-label,
 .sidebar-content .large {
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--sl-color-text);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-family: var(--sl-font);
 }
 
-/* Sidebar links */
 .sidebar-content a {
   font-family: var(--sl-font);
-  font-size: 0.96rem;
+  font-size: 0.92rem;
   line-height: 1.4;
 }
 .sidebar-content a[aria-current="page"] {
   color: var(--sl-color-text-accent);
-  font-style: italic;
   font-weight: 500;
-  background: transparent;
+  background: var(--sl-color-accent-low);
+  border-left: 2px solid var(--sl-color-accent);
 }
 
 /* ── Right rail TOC ──────────────────────────────────────────────── */
 .right-sidebar h2 {
-  font-style: italic;
-  font-weight: 500;
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--sl-color-text-accent);
+  color: var(--sl-color-text);
+  font-family: var(--sl-font);
 }
 .right-sidebar a {
   font-family: var(--sl-font);
-  font-size: 0.92rem;
+  font-size: 0.86rem;
 }
 .right-sidebar a[aria-current="true"] {
   color: var(--sl-color-text-accent);
-  font-style: italic;
+  font-weight: 500;
 }
 
-/* ── Page meta (last updated, edit link) ─────────────────────────── */
 footer.sl-flex {
-  font-style: italic;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
   color: var(--sl-color-gray-4);
 }
 footer.sl-flex a {
   color: var(--sl-color-text-accent);
 }
 
-/* ── Top header rail ─────────────────────────────────────────────── */
 .header {
   background: var(--sl-color-bg-nav);
   border-bottom: var(--plinth-rule);
 }
 
-/* ── Search box ──────────────────────────────────────────────────── */
 [data-open-modal]:hover {
   border-color: var(--sl-color-accent);
 }
 
-/* ── Splash hero scaffolding (Hero override picks up the rest) ────── */
 .hero {
-  padding: 5rem 0 3rem;
+  padding: 3rem 0 2rem;
 }
 
-/* ── Page title block (non-splash pages) ─────────────────────────── */
 .content-panel h1#_top {
   font-family: var(--sl-font);
-  font-weight: 500;
-  font-size: 2.6rem;
-  letter-spacing: -0.022em;
+  font-weight: 600;
+  font-size: 2.4rem;
+  letter-spacing: -0.024em;
   line-height: 1.05;
   text-wrap: balance;
 }
 
-/* ── Pagination links ────────────────────────────────────────────── */
 .pagination-links a {
   font-family: var(--sl-font);
-  font-style: italic;
   border: 1px solid var(--sl-color-hairline);
   background: var(--sl-color-bg);
 }
@@ -316,22 +290,19 @@ footer.sl-flex a {
   border-color: var(--sl-color-accent);
 }
 
-/* ── Asides / callouts ───────────────────────────────────────────── */
 .starlight-aside {
   border-left: 2px solid var(--sl-color-accent);
   background: transparent;
   padding-left: 1.25rem;
-  font-style: italic;
 }
 .starlight-aside--note { border-left-color: var(--sl-color-accent); }
-.starlight-aside--caution { border-left-color: oklch(0.65 0.18 30); }
-.starlight-aside--danger { border-left-color: oklch(0.55 0.22 25); }
-.starlight-aside--tip { border-left-color: oklch(0.6 0.14 145); }
+.starlight-aside--caution { border-left-color: #B43A3A; }
+.starlight-aside--danger { border-left-color: #8B1A1A; }
+.starlight-aside--tip { border-left-color: #2D6E4E; }
 .starlight-aside__title {
-  font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--sl-color-text-accent);
 }
