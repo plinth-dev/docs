@@ -3,6 +3,13 @@ title: Manifesto
 description: The six commitments that shape every default in Plinth.
 ---
 
+<!--
+  KEEP IN SYNC with `plinth-dev/.github/profile/README.md` (the GitHub org
+  profile renders the same six commitments). When you edit the prose below,
+  port the change there too — or vice versa. We will collapse this duplication
+  in Phase F via a build step that copies one to the other.
+-->
+
 You run a fleet of internal applications — project management, change requests, audit dashboards, HR tooling, internal admin. Modules that began as starters and grew. Every module re-implements the same plumbing: identity, authorization, audit, observability, deployment. Every module inherits the same gaps: a session secret committed in `.env.example`, an authorization layer that fails open in dev mode, no real healthcheck, no error boundaries, no centralized logs.
 
 Plinth is the platform foundation those modules should have stood on from day one. A substrate, an SDK, a scaffolder — assembled into something a small platform team can deploy, and let dozens of modules grow on top of without each one becoming the platform's weakest link.
