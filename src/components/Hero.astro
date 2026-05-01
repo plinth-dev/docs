@@ -1,0 +1,124 @@
+---
+// Manuscript-direction Hero override for Starlight's splash template.
+// Drops Starlight's default hero markup; renders a tighter, asymmetric block
+// with a serif display title (em → ochre italic), an italic deck, and primary
+// + minimal CTA links. Frontmatter shape is unchanged from Starlight's stock
+// hero schema, so existing index.md keeps working.
+
+const data = Astro.locals.starlightRoute.entry.data;
+const hero = data.hero;
+
+const titleHtml = hero?.title ?? data.title ?? "";
+const tagline = hero?.tagline ?? "";
+const actions = hero?.actions ?? [];
+
+// `image` block left intentionally unused — this hero is type-first.
+---
+
+<div class="ms-hero">
+  <h1 class="ms-hero-title" set:html={titleHtml} />
+  {tagline && <p class="ms-hero-tagline">{tagline}</p>}
+  {actions.length > 0 && (
+    <div class="ms-hero-actions">
+      {actions.map((action) => (
+        <a
+          href={action.link}
+          class:list={[
+            "ms-hero-action",
+            `ms-hero-action--${action.variant ?? "primary"}`,
+          ]}
+        >
+          {action.text}
+        </a>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .ms-hero {
+    padding: 4rem 0 3rem;
+    max-width: 50rem;
+  }
+  @media (min-width: 50rem) {
+    .ms-hero { padding: 5rem 0 4rem; }
+  }
+  @media (min-width: 72rem) {
+    .ms-hero { padding: 6rem 0 5rem; }
+  }
+
+  .ms-hero-title {
+    font-family: var(--sl-font);
+    font-weight: 500;
+    font-size: clamp(2.5rem, 7.5vw, 5.25rem);
+    line-height: 0.97;
+    letter-spacing: -0.026em;
+    margin: 0 0 1.75rem;
+    color: var(--sl-color-text);
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+  .ms-hero-title :global(em),
+  .ms-hero-title :global(i) {
+    font-style: italic;
+    color: var(--sl-color-text-accent);
+    font-weight: 500;
+  }
+
+  .ms-hero-tagline {
+    font-family: var(--sl-font);
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--sl-color-text);
+    opacity: 0.78;
+    max-width: 32em;
+    margin: 0 0 2.5rem;
+    text-wrap: pretty;
+  }
+
+  .ms-hero-actions {
+    display: flex;
+    gap: 2rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .ms-hero-action {
+    font-family: var(--sl-font);
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  /* Primary — solid charcoal pill, ochre on hover */
+  .ms-hero-action--primary {
+    background: var(--sl-color-text);
+    color: var(--sl-color-text-invert);
+    padding: 0.85rem 1.5rem;
+    font-style: italic;
+    font-weight: 500;
+  }
+  .ms-hero-action--primary:hover,
+  .ms-hero-action--primary:focus-visible {
+    background: var(--sl-color-accent);
+  }
+
+  /* Minimal / secondary — italic ochre with hairline underline */
+  .ms-hero-action--minimal,
+  .ms-hero-action--secondary {
+    color: var(--sl-color-text-accent);
+    font-style: italic;
+    border-bottom: 1px solid var(--sl-color-accent-low);
+    padding-bottom: 2px;
+  }
+  .ms-hero-action--minimal:hover,
+  .ms-hero-action--secondary:hover,
+  .ms-hero-action--minimal:focus-visible,
+  .ms-hero-action--secondary:focus-visible {
+    border-bottom-color: var(--sl-color-accent);
+  }
+</style>

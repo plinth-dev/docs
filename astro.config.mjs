@@ -11,10 +11,8 @@ export default defineConfig({
       title: "Plinth",
       description:
         "Open-source platform foundation for enterprise teams running fleets of internal-tooling modules.",
-      logo: {
-        src: "./src/assets/logo.svg",
-        replacesTitle: false,
-      },
+      // Wordmark only — Plinth in Spectral Medium reads as a logo of its own.
+      // (No image logo file; Starlight falls back to the title text.)
       favicon: "/favicon.svg",
       social: [
         {
@@ -29,8 +27,31 @@ export default defineConfig({
       lastUpdated: true,
       // OG image lands in Phase F — until then no og:image meta is set
       // (better than a 404'd image). Re-enable when /og.png ships.
-      head: [],
+      head: [
+        {
+          tag: "link",
+          attrs: { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "preconnect",
+            href: "https://fonts.gstatic.com",
+            crossorigin: true,
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "stylesheet",
+            href: "https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap",
+          },
+        },
+      ],
       customCss: ["./src/assets/theme.css"],
+      components: {
+        Hero: "./src/components/Hero.astro",
+      },
       sidebar: [
         {
           label: "Start here",

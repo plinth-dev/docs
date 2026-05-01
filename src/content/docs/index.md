@@ -3,18 +3,18 @@ title: Plinth
 description: An open-source platform foundation for enterprise teams running fleets of internal-tooling modules.
 template: splash
 hero:
-  tagline: The load-bearing base for enterprise internal tooling.
+  title: |
+    The load-bearing base for <em>enterprise internal tooling</em>.
+  tagline: A substrate, an SDK, a scaffolder. Six commitments. One Helm install. Modules grow on top — so each one isn't the platform's weakest link.
   actions:
-    - text: Try it in 60 minutes
-      link: /start/try-it/
-      icon: right-arrow
-      variant: primary
     - text: Read the manifesto
       link: /manifesto/
-      icon: open-book
-    - text: Browse the architecture
+      variant: primary
+    - text: Try it in 60 minutes
+      link: /start/try-it/
+      variant: minimal
+    - text: Architecture
       link: /architecture/
-      icon: right-arrow
       variant: minimal
 ---
 
