@@ -3,8 +3,8 @@ title: Try it in 60 minutes
 description: Stand up the Plinth substrate on a fresh kind cluster, generate a module, and watch it deploy.
 ---
 
-:::caution[v0.1.0 in progress]
-This tutorial describes the v0.1.0 end-to-end flow. Until Phase D ships, the `helm install` step below is a placeholder. Track progress on the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md).
+:::note
+The `helm install` step below describes the target flow. The platform chart is not yet published; track current status on the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md).
 :::
 
 Prerequisites: Docker, `kubectl`, `helm`, `kind` (or any Kubernetes cluster you already trust).
@@ -45,4 +45,4 @@ You should see your module reconcile in Argo, then come up at its hostname with 
 ## What's not here
 
 - **Production hardening.** The dev profile turns off HA, replicas, network policies, and a chunk of Wazuh / Falco rules. The `prod` profile is what you actually deploy. See [architecture](/architecture/) for the full posture.
-- **Bare metal.** The Talos bootstrap path is documented separately. Phase D ships kind-first; bare metal lands in Phase D.5.
+- **Bare metal.** The Talos bootstrap path is documented separately; the platform chart targets `kind` first, with bare-metal hardening as a follow-on.

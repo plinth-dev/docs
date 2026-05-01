@@ -6,8 +6,7 @@ sidebar:
   order: 5
 ---
 
-> **Status: Draft.** Targeting `0.1.0` once Husham approves.
-> Package (target): `@plinth-dev/tables` on npm.
+**Package:** `@plinth-dev/tables`
 
 ## Responsibility
 

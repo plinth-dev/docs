@@ -6,8 +6,7 @@ sidebar:
   order: 6
 ---
 
-> **Status: Draft.** Targeting `v0.1.0` once Husham approves.
-> Module path (target): `github.com/plinth-dev/sdk-go/paginate`.
+**Module:** `github.com/plinth-dev/sdk-go/paginate`
 
 ## Responsibility
 

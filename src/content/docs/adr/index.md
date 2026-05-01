@@ -12,7 +12,7 @@ We use [Michael Nygard's format](https://github.com/joelparkerhenderson/architec
 
 ## Index
 
-Phase F lands the first set of ADRs:
+The first ADRs cover:
 
 - **0001** — Why fail-closed Cerbos
 - **0002** — Why Talos Linux
@@ -23,4 +23,4 @@ Phase F lands the first set of ADRs:
 - **0007** — Why SigNoz over LGTM as default
 - **0008** — Why Authentik over the Ory three-piece stack
 
-Until they're written, the rationale lives inline in the [architecture overview](/architecture/) §8 (committed stack) and `PROJECT.md` §9 (risk register on stack choices).
+Until each ADR is written, the rationale for committed stack choices lives in the [architecture overview](/architecture/) §8.

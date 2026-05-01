@@ -6,8 +6,7 @@ sidebar:
   order: 5
 ---
 
-> **Status: Draft.** Targeting `v0.1.0` once Husham approves.
-> Module path (target): `github.com/plinth-dev/sdk-go/otel`.
+**Module:** `github.com/plinth-dev/sdk-go/otel`
 
 ## Responsibility
 
@@ -101,5 +100,5 @@ func WithRouteFromContext() HTTPOption // pulls chi-style routes out of context 
 - `sdk-go/audit` reads the trace ID from context to populate `Event.TraceID`.
 - `sdk-go/errors` reads the trace ID for `Problem.TraceID` in the RFC 7807 response.
 - `sdk-go/authz` does not import this directly — it logs via `slog`. But every authz call site that wants a span should be wrapped in one by the caller.
-- The platform chart's OTel collector deployment (Phase D) terminates OTLP/HTTP at port 4318 inside the cluster.
+- The platform chart's OTel collector deployment terminates OTLP/HTTP at port 4318 inside the cluster.
 - `@plinth-dev/otel-web` is the browser-side counterpart (separate ADR).

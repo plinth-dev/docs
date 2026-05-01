@@ -32,19 +32,12 @@ The Plinth SDK is two language families that encode the platform contracts. Modu
 | [`otel-web`](/sdk/ts/otel-web/) | Browser OpenTelemetry SDK init with auto-instrumentations. |
 | [`env`](/sdk/ts/env/) | Zod-schema-validated env vars; fail-fast at module load. |
 
-## Status
+## Where to start
 
-**Phase B — design week complete.** All 14 SDK packages have draft design ADRs. Each follows the format: responsibility, full API surface, behaviour notes, why-this-shape rationale, boundaries, alternatives table, cross-references.
-
-The four most load-bearing ADRs (drafted first, reviewed first):
+The four most load-bearing packages — read these first if you only read four:
 
 - [`sdk-go/authz`](/sdk/go/authz/) and [`@plinth-dev/authz`](/sdk/ts/authz/) — fail-closed Cerbos clients designed in lockstep
 - [`@plinth-dev/authz-react`](/sdk/ts/authz-react/) — the client-side companion (batched-check-at-layout)
 - [`sdk-go/errors`](/sdk/go/errors/) — the wire-stable error vocabulary every backend speaks
 
-The remaining ten:
-
-- Go: [`audit`](/sdk/go/audit/), [`health`](/sdk/go/health/), [`otel`](/sdk/go/otel/), [`paginate`](/sdk/go/paginate/), [`vault`](/sdk/go/vault/)
-- TypeScript: [`api-client`](/sdk/ts/api-client/), [`forms`](/sdk/ts/forms/), [`tables`](/sdk/ts/tables/), [`otel-web`](/sdk/ts/otel-web/), [`env`](/sdk/ts/env/)
-
-Once Husham reviews and locks the API surfaces, implementation lands per-package in `plinth-dev/sdk-go` and `plinth-dev/sdk-ts`, semver-tagged starting `v0.1.0`. See the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md) for the broader Phase B → C sequence.
+Implementation lands per-package, semver-tagged starting `v0.1.0`. See the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md) for the current state.

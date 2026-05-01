@@ -9,12 +9,9 @@ tableOfContents:
   maxHeadingLevel: 3
 ---
 
-> Version 0.1 · 2026-04-30 · Status: Reference document
-> Audience: Platform engineering leads, infrastructure engineers, information security, compliance, application developers
-
 ## How to read this document
 
-This is a reference for organisations standing up an **internal application platform** — a fleet of related modules that share authentication, authorisation, observability, audit, and deployment infrastructure. The patterns described are what you'd choose if you were starting fresh today, with banking-grade defaults and an open-source budget.
+A reference for organisations standing up an **internal application platform** — a fleet of related modules that share authentication, authorisation, observability, audit, and deployment infrastructure. The patterns described are what you'd choose if you were starting fresh today, with banking-grade defaults and an open-source budget. Audience: platform engineering leads, infrastructure engineers, information security, compliance, and application developers.
 
 Five audiences, five entry points:
 

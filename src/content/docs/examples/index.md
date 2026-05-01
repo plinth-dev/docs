@@ -14,6 +14,4 @@ Three minimum-viable modules ship with the docs site to demonstrate the platform
 | `todo` | CRUD with auth + audit. The "hello world" of internal tooling. |
 | `approvals` | Adds [Temporal](https://temporal.io) back into the stack. Demonstrates the optional-substrate-component pattern. |
 
-## Status
-
-Examples land in Phase F. Until then, the [`starter-web`](https://github.com/plinth-dev/starter-web) and [`starter-api`](https://github.com/plinth-dev/starter-api) repos contain the canonical Items example end-to-end.
+The canonical end-to-end example currently lives in the [`starter-web`](https://github.com/plinth-dev/starter-web) and [`starter-api`](https://github.com/plinth-dev/starter-api) repos as the **Items** resource. The smaller examples above ship later as standalone modules.

@@ -6,8 +6,7 @@ sidebar:
   order: 3
 ---
 
-> **Status: Draft.** Targeting `v0.1.0` once Husham approves.
-> Module path (target): `github.com/plinth-dev/sdk-go/audit`.
+**Module:** `github.com/plinth-dev/sdk-go/audit`
 
 ## Responsibility
 
@@ -167,5 +166,5 @@ func (m *MemoryProducer) Close(ctx context.Context) error
 
 - `sdk-go/otel` injects the trace ID this package reads from context.
 - `sdk-go/authz` returns `Decision` — the canonical pattern is to call `audit.Publish(ctx, audit.Event{Outcome: OutcomeDenied, Reason: d.Reason.String(), ...})` after a denied check.
-- NATS JetStream + audit subject configuration lives in `plinth-dev/platform/charts/nats/values.yaml` once Phase D ships.
-- SigNoz's audit dashboard (Phase F) reads from the same NATS subject via an OpenTelemetry collector pipeline.
+- NATS JetStream + audit subject configuration lives in the platform chart at `plinth-dev/platform/charts/nats/values.yaml`.
+- SigNoz's audit dashboard reads from the same NATS subject via an OpenTelemetry collector pipeline.

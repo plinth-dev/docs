@@ -6,8 +6,7 @@ sidebar:
   order: 4
 ---
 
-> **Status: Draft.** Targeting `0.1.0` once Husham approves.
-> Package (target): `@plinth-dev/forms` on npm.
+**Package:** `@plinth-dev/forms`
 
 ## Responsibility
 

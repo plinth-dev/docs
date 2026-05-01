@@ -6,8 +6,7 @@ sidebar:
   order: 1
 ---
 
-> **Status: Draft.** Targeting `v0.1.0` once Husham approves the API surface.
-> Module path (target): `github.com/plinth-dev/sdk-go/authz`.
+**Module:** `github.com/plinth-dev/sdk-go/authz`
 
 ## Responsibility
 

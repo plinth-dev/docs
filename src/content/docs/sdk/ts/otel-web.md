@@ -6,8 +6,7 @@ sidebar:
   order: 6
 ---
 
-> **Status: Draft.** Targeting `0.1.0` once Husham approves.
-> Package (target): `@plinth-dev/otel-web` on npm.
+**Package:** `@plinth-dev/otel-web`
 
 ## Responsibility
 
@@ -121,4 +120,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 - `sdk-go/otel` is the backend counterpart; `traceparent` propagation stitches traces across the boundary.
 - `@plinth-dev/api-client` calls fetch which is auto-instrumented here — no extra wiring.
-- The platform's OTel collector deployment (Phase D) terminates browser-origin OTLP/HTTP at a public ingress (auth via the gateway).
+- The platform's OTel collector deployment terminates browser-origin OTLP/HTTP at a public ingress (auth via the gateway).

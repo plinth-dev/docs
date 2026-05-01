@@ -6,8 +6,7 @@ sidebar:
   order: 7
 ---
 
-> **Status: Draft.** Targeting `v0.1.0` once Husham approves.
-> Module path (target): `github.com/plinth-dev/sdk-go/vault`.
+**Module:** `github.com/plinth-dev/sdk-go/vault`
 
 ## Responsibility
 
@@ -90,6 +89,6 @@ func (r *Reader) Refresh(name string)
 
 ## Cross-references
 
-- External Secrets Operator config (Phase D) lives in `plinth-dev/platform/charts/external-secrets/`. ESO syncs Vault paths to `/run/secrets/<name>` files inside pods.
+- External Secrets Operator config lives in the platform chart at `plinth-dev/platform/charts/external-secrets/`. ESO syncs Vault paths to `/run/secrets/<name>` files inside pods.
 - `starter-api`'s `main()` calls `vault.MustGet("DATABASE_URL")` and friends at startup.
 - The Cerbos PDP itself reads its secrets from `/run/secrets` via the same convention; this package isn't used by Cerbos (it's not Go code), but the convention is shared.

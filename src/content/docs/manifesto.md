@@ -6,8 +6,8 @@ description: The six commitments that shape every default in Plinth.
 <!--
   KEEP IN SYNC with `plinth-dev/.github/profile/README.md` (the GitHub org
   profile renders the same six commitments). When you edit the prose below,
-  port the change there too — or vice versa. We will collapse this duplication
-  in Phase F via a build step that copies one to the other.
+  port the change there too — or vice versa. The duplication will eventually
+  be collapsed via a build step that copies one to the other.
 -->
 
 You run a fleet of internal applications — project management, change requests, audit dashboards, HR tooling, internal admin. Modules that began as starters and grew. Every module re-implements the same plumbing: identity, authorization, audit, observability, deployment. Every module inherits the same gaps: a session secret committed in `.env.example`, an authorization layer that fails open in dev mode, no real healthcheck, no error boundaries, no centralized logs.

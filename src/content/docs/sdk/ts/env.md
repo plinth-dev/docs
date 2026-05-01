@@ -6,8 +6,7 @@ sidebar:
   order: 7
 ---
 
-> **Status: Draft.** Targeting `0.1.0` once Husham approves.
-> Package (target): `@plinth-dev/env` on npm.
+**Package:** `@plinth-dev/env`
 
 ## Responsibility
 

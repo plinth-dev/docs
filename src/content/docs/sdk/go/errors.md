@@ -6,8 +6,7 @@ sidebar:
   order: 2
 ---
 
-> **Status: Draft.** Targeting `v0.1.0` once Husham approves.
-> Module path (target): `github.com/plinth-dev/sdk-go/errors`.
+**Module:** `github.com/plinth-dev/sdk-go/errors`
 
 ## Responsibility
 

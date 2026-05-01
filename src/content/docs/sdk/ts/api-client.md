@@ -6,8 +6,7 @@ sidebar:
   order: 3
 ---
 
-> **Status: Draft.** Targeting `0.1.0` once Husham approves.
-> Package (target): `@plinth-dev/api-client` on npm.
+**Package:** `@plinth-dev/api-client`
 
 ## Responsibility
 
