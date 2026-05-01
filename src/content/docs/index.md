@@ -18,6 +18,10 @@ hero:
       variant: minimal
 ---
 
+:::tip[v0.1.0 just shipped]
+A working SDK across Go and TypeScript, two starters, a CLI, a Backstage scaffolder, a Helm chart, and a worked example — all stable, all open. Read the [launch announcement](/launch/v0-1-0/).
+:::
+
 ## What Plinth gives a team
 
 A fleet of internal applications — project management, change requests, audit dashboards, HR tooling, internal admin — sharing one substrate, one SDK, one scaffolder. Modules import the platform; they don't re-implement it.
