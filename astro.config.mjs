@@ -1,5 +1,6 @@
 // @ts-check
 
+import mdx from "@astrojs/mdx";
 import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 
@@ -44,7 +45,7 @@ export default defineConfig({
           tag: "link",
           attrs: {
             rel: "stylesheet",
-            href: "https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap",
+            href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap",
           },
         },
       ],
@@ -82,10 +83,23 @@ export default defineConfig({
           autogenerate: { directory: "examples" },
         },
         {
+          label: "Tools",
+          badge: { text: "new", variant: "tip" },
+          items: [
+            {
+              label: "Sketch",
+              slug: "tools/sketch",
+              badge: { text: "live", variant: "success" },
+            },
+            { label: "All tools", slug: "tools" },
+          ],
+        },
+        {
           label: "Decisions (ADRs)",
           autogenerate: { directory: "adr" },
         },
       ],
     }),
+    mdx(),
   ],
 });

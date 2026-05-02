@@ -1,0 +1,51 @@
+---
+title: Plinth Sketch
+description: Type a few lines of DSL — get a typeset architecture diagram in the Plinth design language. Share via URL. Export PNG / SVG. Live in your browser.
+template: splash
+sidebar:
+  label: Sketch
+  badge:
+    text: live
+    variant: success
+  order: 1
+hero:
+  title: |
+    Plinth Sketch<em>.</em>
+  tagline: A DSL for system architecture diagrams. Output is typeset SVG in this site's design language. The diagram on the home page was made with this tool.
+---
+
+import IFrameTool from "../../../components/IFrameTool.astro";
+
+<IFrameTool src="/tools/sketch-app.html" title="Plinth Sketch" />
+
+## DSL syntax
+
+```sketch
+# Comments start with #.
+@layer Layer name              # set the current layer
+
+id : Label / sublabel          # define a node (sublabel optional)
+a -> b : edge label            # directed edge (label optional)
+
+@cite Custom bottom-right text # optional cite line
+```
+
+That's the whole language. Layers stack vertically, nodes flow horizontally inside each layer, edges are auto-routed.
+
+## Use it at build time
+
+The same DSL that powers this in-browser editor ships as `@plinth-dev/sketch` on npm. Install once, render diagrams at build time, embed the SVG in your README:
+
+```bash
+npm install -g @plinth-dev/sketch
+plinth-sketch architecture.sketch -o architecture.svg
+```
+
+Or wire up the [GitHub Action](https://github.com/plinth-dev/sketch) to re-render on every commit:
+
+```yaml
+- uses: plinth-dev/sketch@v0
+  with: { pattern: 'docs/**/*.sketch', commit: 'true' }
+```
+
+[**View source on GitHub →**](https://github.com/plinth-dev/sketch)

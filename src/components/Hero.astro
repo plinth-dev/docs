@@ -1,9 +1,7 @@
 ---
-// Manuscript-direction Hero override for Starlight's splash template.
-// Drops Starlight's default hero markup; renders a tighter, asymmetric block
-// with a serif display title (em → ochre italic), an italic deck, and primary
-// + minimal CTA links. Frontmatter shape is unchanged from Starlight's stock
-// hero schema, so existing index.md keeps working.
+// Wide Platform v2 hero override for Starlight's splash template.
+// IBM Plex Sans 600, navy period flourish, status pill below subtitle,
+// filled-navy primary CTA + underlined aux links.
 
 const data = Astro.locals.starlightRoute.entry.data;
 const hero = data.hero;
@@ -11,21 +9,23 @@ const hero = data.hero;
 const titleHtml = hero?.title ?? data.title ?? "";
 const tagline = hero?.tagline ?? "";
 const actions = hero?.actions ?? [];
-
-// `image` block left intentionally unused — this hero is type-first.
 ---
 
-<div class="ms-hero">
-  <h1 class="ms-hero-title" set:html={titleHtml} />
-  {tagline && <p class="ms-hero-tagline">{tagline}</p>}
+<div class="v2-hero">
+  <h1 class="v2-hero-title" set:html={titleHtml} />
+  {tagline && <p class="v2-hero-tagline">{tagline}</p>}
+  <span class="v2-hero-pill">
+    <span class="dot"></span>
+    v0.1.0 · open source · MIT
+  </span>
   {actions.length > 0 && (
-    <div class="ms-hero-actions">
+    <div class="v2-hero-actions">
       {actions.map((action) => (
         <a
           href={action.link}
           class:list={[
-            "ms-hero-action",
-            `ms-hero-action--${action.variant ?? "primary"}`,
+            "v2-hero-action",
+            `v2-hero-action--${action.variant ?? "primary"}`,
           ]}
         >
           {action.text}
@@ -36,89 +36,109 @@ const actions = hero?.actions ?? [];
 </div>
 
 <style>
-  .ms-hero {
-    padding: 4rem 0 3rem;
-    max-width: 50rem;
+  .v2-hero {
+    padding: 3.5rem 0 2.5rem;
+    max-width: 60rem;
   }
   @media (min-width: 50rem) {
-    .ms-hero { padding: 5rem 0 4rem; }
-  }
-  @media (min-width: 72rem) {
-    .ms-hero { padding: 6rem 0 5rem; }
+    .v2-hero { padding: 4.5rem 0 3.5rem; }
   }
 
-  .ms-hero-title {
+  .v2-hero-title {
     font-family: var(--sl-font);
-    font-weight: 500;
-    font-size: clamp(2.5rem, 7.5vw, 5.25rem);
-    line-height: 0.97;
-    letter-spacing: -0.026em;
-    margin: 0 0 1.75rem;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 5.4vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.024em;
+    margin: 0 0 1.2rem;
     color: var(--sl-color-text);
-    max-width: 14ch;
+    max-width: 18ch;
     text-wrap: balance;
   }
-  .ms-hero-title :global(em),
-  .ms-hero-title :global(i) {
+  .v2-hero-title :global(em),
+  .v2-hero-title :global(i) {
     font-style: italic;
     color: var(--sl-color-text-accent);
-    font-weight: 500;
+    font-weight: 600;
+  }
+  .v2-hero-title :global(.pt) {
+    color: var(--sl-color-text-accent);
   }
 
-  .ms-hero-tagline {
+  .v2-hero-tagline {
     font-family: var(--sl-font);
-    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
-    font-style: italic;
+    font-size: clamp(1.05rem, 1.7vw, 1.18rem);
     line-height: 1.5;
     color: var(--sl-color-text);
     opacity: 0.78;
-    max-width: 32em;
-    margin: 0 0 2.5rem;
+    max-width: 60ch;
+    margin: 0 0 1.6rem;
     text-wrap: pretty;
   }
 
-  .ms-hero-actions {
+  .v2-hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sl-font);
+    font-size: 12.5px;
+    color: var(--sl-color-text);
+    opacity: 0.72;
+    padding: 4px 10px;
+    background: var(--sl-color-hairline-light);
+    border: 1px solid var(--sl-color-hairline);
+    margin: 0 0 2rem;
+  }
+  .v2-hero-pill .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--sl-color-accent);
+    border-radius: 50%;
+  }
+
+  .v2-hero-actions {
     display: flex;
-    gap: 2rem;
-    align-items: baseline;
+    gap: 1.6rem;
+    align-items: center;
     flex-wrap: wrap;
   }
 
-  .ms-hero-action {
+  .v2-hero-action {
     font-family: var(--sl-font);
-    font-size: 1.05rem;
-    text-decoration: none;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease,
-      border-color 0.15s ease;
-  }
-
-  /* Primary — solid charcoal pill, ochre on hover */
-  .ms-hero-action--primary {
-    background: var(--sl-color-text);
-    color: var(--sl-color-text-invert);
-    padding: 0.85rem 1.5rem;
-    font-style: italic;
+    font-size: 0.94rem;
     font-weight: 500;
-  }
-  .ms-hero-action--primary:hover,
-  .ms-hero-action--primary:focus-visible {
-    background: var(--sl-color-accent);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
-  /* Minimal / secondary — italic ochre with hairline underline */
-  .ms-hero-action--minimal,
-  .ms-hero-action--secondary {
-    color: var(--sl-color-text-accent);
-    font-style: italic;
-    border-bottom: 1px solid var(--sl-color-accent-low);
+  /* Primary — filled navy box */
+  .v2-hero-action--primary {
+    background: var(--sl-color-accent);
+    color: var(--sl-color-text-invert);
+    padding: 0.7rem 1.2rem;
+  }
+  .v2-hero-action--primary:hover,
+  .v2-hero-action--primary:focus-visible {
+    background: var(--sl-color-accent-high);
+  }
+
+  /* Aux — underlined ink */
+  .v2-hero-action--minimal,
+  .v2-hero-action--secondary {
+    color: var(--sl-color-text);
+    border-bottom: 1px solid var(--sl-color-hairline-shade);
     padding-bottom: 2px;
   }
-  .ms-hero-action--minimal:hover,
-  .ms-hero-action--secondary:hover,
-  .ms-hero-action--minimal:focus-visible,
-  .ms-hero-action--secondary:focus-visible {
+  .v2-hero-action--minimal::after,
+  .v2-hero-action--secondary::after {
+    content: " ›";
+    color: var(--sl-color-text-accent);
+  }
+  .v2-hero-action--minimal:hover,
+  .v2-hero-action--secondary:hover,
+  .v2-hero-action--minimal:focus-visible,
+  .v2-hero-action--secondary:focus-visible {
+    color: var(--sl-color-text-accent);
     border-bottom-color: var(--sl-color-accent);
   }
 </style>
