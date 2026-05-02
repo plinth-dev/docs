@@ -26,13 +26,36 @@ export default defineConfig({
         baseUrl: "https://github.com/plinth-dev/docs/edit/main/",
       },
       lastUpdated: true,
-      // og:image lands with the default OG card in Wave 4 once huashu-design
-      // produces /og-default.png. Until then no og:image is set (better than
-      // a 404'd image).
       head: [
         {
           tag: "meta",
           attrs: { name: "theme-color", content: "#FBFBF9" },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            property: "og:image",
+            content: "https://plinth.run/og-default.png",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: { property: "og:image:width", content: "1200" },
+        },
+        {
+          tag: "meta",
+          attrs: { property: "og:image:height", content: "630" },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            name: "twitter:image",
+            content: "https://plinth.run/og-default.png",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: { name: "twitter:card", content: "summary_large_image" },
         },
         {
           tag: "link",
