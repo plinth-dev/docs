@@ -118,7 +118,7 @@ plinth new access-requests \
   --module-path github.com/plinth-dev/example-access-requests/access-requests-api
 ```
 
-…then adapted from the starter's `Items` resource to `AccessRequest`. The same flow scaffolds your own modules — see the [60-minute walkthrough](/start/try-it/).
+…then adapted from the starter's `Items` resource to `AccessRequest`. The same flow scaffolds your own modules — see the [stand-it-up walkthrough](/start/try-it/).
 
 ## Replacing this with your own resource
 

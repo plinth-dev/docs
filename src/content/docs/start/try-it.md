@@ -1,5 +1,5 @@
 ---
-title: Try it in 60 minutes
+title: Stand it up in an afternoon
 description: Stand up the Plinth substrate on a fresh kind cluster, generate a module, and watch it deploy.
 ---
 
