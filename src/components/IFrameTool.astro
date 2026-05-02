@@ -1,7 +1,8 @@
 ---
 // Embeds an interactive tool (an HTML file in /public/) inside a Starlight page.
-// The iframe takes the full content width and a tall fixed height; on small
-// viewports we collapse the height so it remains usable.
+// Same-origin; we don't add `sandbox=` because allow-scripts + allow-same-origin
+// together negates the sandbox (and Chromium warns about it). If we ever host
+// tools on a separate origin, drop allow-same-origin and add a real sandbox.
 interface Props {
   src: string;
   title: string;
@@ -16,18 +17,58 @@ const { src, title, height = "min(78vh, 760px)" } = Astro.props as Props;
     title={title}
     style={`height: ${height}`}
     loading="lazy"
-    sandbox="allow-scripts allow-same-origin allow-downloads"
   ></iframe>
 </div>
 
+<script is:inline>
+  // (1) Forward the parent's URL hash into the iframe so /tools/sketch/#d=<b64>
+  //     share links route the encoded DSL into the embedded tool.
+  // (2) Full-bleed the iframe by measuring the parent's left offset on each
+  //     resize. CSS-only `100vw + calc(50% - 50vw)` misaligns when the parent
+  //     is left-anchored (Starlight splash template), so we measure instead.
+  (function () {
+    function applyHash() {
+      if (!location.hash) return;
+      const f = document.querySelector(".iframe-tool iframe");
+      if (!f) return;
+      const u = new URL(f.getAttribute("src"), location.origin);
+      u.hash = location.hash;
+      f.setAttribute("src", u.toString());
+    }
+    function applyBleed() {
+      const els = document.querySelectorAll(".iframe-tool");
+      els.forEach(function (el) {
+        // Reset first so the measurement reflects the un-bled position.
+        el.style.marginLeft = "";
+        el.style.marginRight = "";
+        el.style.width = "";
+        const r = el.getBoundingClientRect();
+        const left = r.left;
+        const right = window.innerWidth - r.right;
+        el.style.marginLeft = -left + "px";
+        el.style.marginRight = -right + "px";
+        el.style.width = window.innerWidth + "px";
+      });
+    }
+    function init() {
+      applyHash();
+      applyBleed();
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init, { once: true });
+    } else {
+      init();
+    }
+    window.addEventListener("resize", applyBleed);
+  })();
+</script>
+
 <style>
-  /* Break the iframe out of Starlight's content max-width so the tool gets a
-     wider area. Standard "full bleed" technique: width 100vw + negative
-     margin-left/right that compensates for the parent's offset. */
+  /* Default to content width; the inline script widens to viewport on
+     load + resize. (No CSS-only trick survives Starlight's splash template
+     which anchors content to a left column rather than centering it.) */
   .iframe-tool {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+    width: 100%;
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
     background: var(--sl-color-bg);

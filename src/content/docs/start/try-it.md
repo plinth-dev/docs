@@ -3,11 +3,11 @@ title: Stand it up in an afternoon
 description: Stand up the Plinth substrate on a fresh kind cluster, generate a module, and watch it deploy.
 ---
 
-:::note
-The `helm install` step below describes the target flow. The platform chart is not yet published; track current status on the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md).
+:::caution[v0.1.0 status]
+The platform chart is *not yet on a registry*. Today you build it from source as shown below. The `helm install oci://…` and Argo-CD reconcile flow are the *v1.0 target*; track progress on the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md).
 :::
 
-Prerequisites: Docker, `kubectl`, `helm`, `kind` (or any Kubernetes cluster you already trust).
+Prerequisites: Docker, `kubectl`, `helm`, `kind` (or any Kubernetes cluster you already trust), `git`, `go` (1.25+).
 
 ## 1. Read
 
@@ -17,32 +17,36 @@ Skim the [manifesto](/manifesto/) (5 minutes) and the [architecture overview](/a
 
 ```bash
 kind create cluster --name plinth
-helm install plinth oci://ghcr.io/plinth-dev/platform --values dev.values.yaml
+git clone https://github.com/plinth-dev/platform
+cd platform
+helm dependency update charts/plinth
+helm install plinth charts/plinth --values charts/plinth/values-dev.yaml
 ```
 
-The dev profile spins up a single-node cluster with HA disabled. It's not production-shaped — it's the fastest way to see everything wired together.
+The dev profile spins up a single-node cluster with HA disabled. It's not production-shaped — it's the fastest way to see CloudNativePG + Cerbos + the OpenTelemetry Collector wired together. (Vault, Authentik, Argo CD, the rest of the substrate land incrementally — see *what's not here* below.)
 
-When `helm install` finishes, Argo CD reconciles the rest. Wait for `kubectl get applications -n argocd` to settle.
+Wait for `kubectl get pods -A` to settle.
 
 ## 3. Generate a module
 
 ```bash
-brew install plinth-dev/tap/plinth   # or: go install github.com/plinth-dev/cli@latest
+go install github.com/plinth-dev/cli/cmd/plinth@latest
 plinth new my-module --web --api --owner=me
 ```
 
-The CLI clones the starters, renames everything, and (with `--gitlab-push` and `--open-mrs`) opens MRs against the GitOps and policies repos.
+The CLI clones the starters, renames identifiers consistently across both, and writes a `.plinth.yaml` capturing the choices. (`--gitlab-push` / `--open-mrs` for GitOps + policy MRs are *v1.0 target* flags; today the new module is local.)
 
-## 4. See it deployed
+## 4. Deploy your module
 
 ```bash
-open http://argo.localhost           # Argo CD shows my-module syncing
-open http://my-module.localhost      # the module's dashboard
+cd my-module-api && make deploy   # Makefile targets in the starters
 ```
 
-You should see your module reconcile in Argo, then come up at its hostname with auth, audit, OTel, and security headers already wired.
+Every module comes up with `/healthz`, `/readyz`, structured-JSON logs, OpenTelemetry traces (sent to the Collector from step 2), Cerbos-fail-closed authorization, and RFC 7807 error responses already wired.
 
 ## What's not here
 
-- **Production hardening.** The dev profile turns off HA, replicas, network policies, and a chunk of Wazuh / Falco rules. The `prod` profile is what you actually deploy. See [architecture](/architecture/) for the full posture.
+- **Argo CD reconciliation.** The launch v0.1.0 chart deploys directly via Helm. Argo CD app-of-apps lands incrementally toward v1.0.
+- **Identity provider.** Authentik / Ory Kratos integration is *roadmapped*. v0.1.0 starters use a dev cookie shim — fine for the walkthrough, not for shipping.
+- **Production hardening.** The dev profile turns off HA, replicas, network policies. The `prod` profile is what you actually deploy when those substrate components ship. See [architecture](/architecture/) for the full posture.
 - **Bare metal.** The Talos bootstrap path is documented separately; the platform chart targets `kind` first, with bare-metal hardening as a follow-on.

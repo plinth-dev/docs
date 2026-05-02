@@ -8,46 +8,23 @@ sidebar:
 
 Free utilities for working with Plinth and the adjacent stacks Plinth integrates — Cerbos, OpenTelemetry, CloudEvents, Helm, RFC&nbsp;7807. No signup. No tracking. Each tool's source is on GitHub. Each tool's URL is bookmarkable and shareable.
 
-## Diagrams &amp; visualisation
+## [Plinth Sketch](/tools/sketch/) — *live*
 
-### [Sketch](/tools/sketch/) — *live*
-
-A visual + DSL editor for system architecture diagrams. Type a few lines of plain text — components, edges, layers — get a typeset SVG matching this site's design language. Share via URL. Export PNG / SVG / embed iframe. Available as a [CLI + GitHub Action](https://github.com/plinth-dev/sketch) so you can render diagrams at build time and embed them in any README.
-
-> **Use instead of** Mermaid (default chrome reads as utility), draw.io (overkill), Excalidraw (looks amateur), screenshotting Whimsical.
+A visual + DSL editor for system architecture diagrams. Type a few lines of plain text — components, edges, layers — get a typeset SVG matching this site's design language. Share via URL. Available as a [CLI + GitHub Action](https://github.com/plinth-dev/sketch) so you can render diagrams at build time and embed them in any README.
 
 ```bash
 npm install -g @plinth-dev/sketch
 plinth-sketch architecture.sketch -o architecture.svg
 ```
 
-### Module Preview — *coming soon*
+The diagram on the [v0.1.0 launch page](/launch/v0-1-0/) and elsewhere on this site is rendered with this tool from a 22-line `.sketch` file.
 
-Type a `plinth new` command and see the resulting file tree, dependency graph, and SDK surface area in the browser before installing.
+## On the way
 
-## Configuration builders
+Two more tools are in active development. They land when they're worth a reader's time, not before.
 
-### OTel Config — *coming soon*
-
-Drag-and-drop builder for OpenTelemetry Collector configurations. Pick receivers, processors, exporters from a catalog; outputs full YAML. Imports existing configs to validate. Targets: Tempo, Jaeger, SigNoz, Honeycomb, Datadog, vendor-neutral OTLP.
-
-### Values Diff — *coming soon*
-
-Paste two Helm `values.yaml` files; see a semantic diff with schema validation against the Plinth platform chart.
-
-## Validators &amp; explorers
-
-### Audit Explorer — *coming soon*
-
-Paste CloudEvents JSON-lines; validate against the 1.0 spec; render as a queryable timeline. See what Plinth's audit module emits before adopting it.
-
-### Problem Builder — *coming soon*
-
-Visual builder for RFC 7807 Problem Details JSON. Validates trace + extension fields. Generates copy-paste code for `sdk-go/errors` and `@plinth-dev/api-client`.
-
-### Cerbos Lint — *coming soon*
-
-Paste a Cerbos policy; check syntax against the v1 schema; simulate decisions against principals you define inline.
+- **OTel Config Builder** — drag-and-drop builder for OpenTelemetry Collector configurations. Pick receivers, processors, exporters from a catalog; outputs full YAML. Targets: Tempo, Jaeger, SigNoz, Honeycomb, Datadog, vendor-neutral OTLP.
+- **CloudEvents Validator** — paste CloudEvents JSON-lines; validate against the 1.0 spec; render as a queryable timeline. See what Plinth's audit module emits before adopting it.
 
 ---
 

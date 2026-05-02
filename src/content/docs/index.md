@@ -1,6 +1,6 @@
 ---
-title: Plinth
-description: An open-source platform foundation for organisations running fleets of internal-tooling modules at regulated companies.
+title: A platform foundation for internal-tooling fleets
+description: An open-source platform foundation for organisations running fleets of internal-tooling modules at regulated companies — banks, insurers, healthcare, government.
 template: splash
 hero:
   title: |

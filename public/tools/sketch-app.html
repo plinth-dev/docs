@@ -38,19 +38,25 @@
       overflow: hidden;
     }
     .toolbar {
-      height: var(--toolbar-h);
+      min-height: var(--toolbar-h);
       background: var(--bg-soft);
       border-bottom: 1px solid var(--rule);
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 0 16px;
+      padding: 6px 16px;
+      flex-wrap: wrap;
     }
     .toolbar .group { display: flex; align-items: center; gap: 6px; }
     .toolbar .group + .group {
       margin-left: 8px;
       padding-left: 16px;
       border-left: 1px solid var(--rule-firm);
+    }
+    @media (max-width: 56rem) {
+      .toolbar .group + .group {
+        margin-left: 0; padding-left: 0; border-left: none;
+      }
     }
     .toolbar .lbl {
       font-family: var(--sans);
@@ -80,13 +86,19 @@
     }
     .toolbar .status .ok { color: var(--accent); }
     .toolbar .status .err { color: #B43A3A; }
+    .toolbar .status .ok::before { content: "●"; margin-right: 4px; }
+    .toolbar .status .err::before { content: "✕"; margin-right: 4px; font-weight: 700; }
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+    }
     .editor {
       display: grid;
       grid-template-columns: 480px 1fr;
       height: calc(100vh - var(--toolbar-h));
     }
     @media (max-width: 56rem) {
-      .editor { grid-template-columns: 1fr; }
+      .editor { grid-template-columns: 1fr; height: auto; }
       .pane-edit textarea { min-height: 280px; }
     }
     .pane-edit {
@@ -139,9 +151,11 @@
 </head>
 <body>
 
-  <div class="toolbar">
+  <h1 class="visually-hidden">Plinth Sketch — DSL editor for architecture diagrams</h1>
+
+  <div class="toolbar" role="toolbar" aria-label="Sketch tool actions">
     <div class="group">
-      <span class="lbl">Example</span>
+      <label class="lbl" for="example">Example</label>
       <select id="example">
         <option value="plinth">Plinth substrate (this site)</option>
         <option value="threetier">Three-tier web app</option>
@@ -153,15 +167,15 @@
       <button id="download-svg" class="primary">Download SVG</button>
       <button id="copy-link">Copy share link</button>
     </div>
-    <span class="status" id="status"><span class="ok">●</span> ready</span>
+    <span class="status" id="status" role="status" aria-live="polite" aria-atomic="true"><span class="ok">ready</span></span>
   </div>
 
-  <div class="editor">
+  <main class="editor">
     <section class="pane-edit" aria-label="DSL editor">
       <header class="header">
         Diagram source <span class="meta" id="lines">0 lines</span>
       </header>
-      <textarea id="src" spellcheck="false" autocomplete="off" autocorrect="off" aria-label="Diagram source DSL"></textarea>
+      <textarea id="src" spellcheck="false" autocomplete="off" autocorrect="off" aria-label="Diagram source DSL" autofocus></textarea>
     </section>
     <section class="pane-preview" aria-label="SVG preview">
       <header class="header">
@@ -171,9 +185,11 @@
         <span class="empty">Type something on the left to see a diagram.</span>
       </div>
     </section>
-  </div>
+  </main>
 
 <script type="module">
+// Pinned to a specific version so a server-side change doesn't surprise the
+// in-browser tool. Bump explicitly when @plinth-dev/sketch ships a new tag.
 import { parse, layout, render } from "https://esm.sh/@plinth-dev/sketch@0.1.0";
 
 const EXAMPLES = {
@@ -235,13 +251,7 @@ api -> db
 api -> redis
 api -> s3
 `,
-  empty: `# Start typing.
-# Define nodes first, then group them into layers, then add edges.
-
-# @layer My layer
-# id : Label / optional sublabel
-# id_a -> id_b : edge label
-`,
+  empty: ``,
 };
 
 const $ = (s) => document.querySelector(s);
@@ -254,36 +264,63 @@ const exampleEl = $('#example');
 
 let lastSVG = '';
 
+function setStatus(text, isErr) {
+  // Replace child nodes (not innerHTML) so SR doesn't over-announce.
+  const span = document.createElement('span');
+  span.className = isErr ? 'err' : 'ok';
+  span.textContent = text;
+  statusEl.replaceChildren(span);
+}
+
+function placeholder(msg) {
+  canvasEl.replaceChildren();
+  const s = document.createElement('span');
+  s.className = 'empty';
+  s.textContent = msg;
+  canvasEl.appendChild(s);
+}
+
 function update() {
   const text = srcEl.value;
   linesEl.textContent = `${text.split('\n').length} lines`;
   if (!text.trim()) {
-    canvasEl.innerHTML = '<span class="empty">Type something on the left to see a diagram.</span>';
+    placeholder('Type something on the left to see a diagram.');
     metaEl.textContent = '0 nodes · 0 edges';
-    statusEl.innerHTML = '<span class="ok">●</span> ready';
+    setStatus('ready', false);
+    lastSVG = '';
     return;
   }
   try {
     const parsed = parse(text);
+    metaEl.textContent = `${parsed.nodeOrder.length} nodes · ${parsed.edges.length} edges`;
+    if (parsed.nodeOrder.length === 0) {
+      placeholder('Define a node first — e.g. `web : Web tier`.');
+      lastSVG = '';
+      if (parsed.errors.length) {
+        setStatus(`${parsed.errors.length} unparsed line${parsed.errors.length === 1 ? '' : 's'}`, true);
+      } else {
+        setStatus('ready', false);
+      }
+      return;
+    }
     const lay = layout(parsed);
     const svg = render(parsed, lay);
     canvasEl.innerHTML = svg;
     lastSVG = svg;
-    metaEl.textContent = `${parsed.nodeOrder.length} nodes · ${parsed.edges.length} edges`;
     const missing = new Set();
     for (const e of parsed.edges) {
       if (!parsed.nodes[e.from]) missing.add(e.from);
       if (!parsed.nodes[e.to]) missing.add(e.to);
     }
     if (parsed.errors.length) {
-      statusEl.innerHTML = `<span class="err">●</span> ${parsed.errors.length} unparsed line${parsed.errors.length === 1 ? '' : 's'}`;
+      setStatus(`${parsed.errors.length} unparsed line${parsed.errors.length === 1 ? '' : 's'}`, true);
     } else if (missing.size) {
-      statusEl.innerHTML = `<span class="err">●</span> undefined node${missing.size === 1 ? '' : 's'}: ${[...missing].slice(0, 3).join(', ')}`;
+      setStatus(`undefined node${missing.size === 1 ? '' : 's'}: ${[...missing].slice(0, 3).join(', ')}`, true);
     } else {
-      statusEl.innerHTML = '<span class="ok">●</span> ok';
+      setStatus('ok', false);
     }
   } catch (err) {
-    statusEl.innerHTML = '<span class="err">●</span> ' + err.message;
+    setStatus(err.message, true);
   }
 }
 
@@ -297,10 +334,23 @@ let timer = null;
 srcEl.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(update, 80); });
 
 function flashStatus(msg, isErr) {
-  const before = statusEl.innerHTML;
-  statusEl.innerHTML = (isErr ? '<span class="err">●</span> ' : '<span class="ok">●</span> ') + msg;
-  setTimeout(() => { statusEl.innerHTML = before; }, 1500);
+  const before = statusEl.cloneNode(true).childNodes;
+  setStatus(msg, !!isErr);
+  setTimeout(() => { statusEl.replaceChildren(...before); }, 1500);
 }
+
+// Convert byte array → base64 in 8K chunks so we don't blow the
+// String.fromCharCode call-stack limit on large DSLs.
+function bytesToBase64(bytes) {
+  const CHUNK = 8192;
+  let s = '';
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    s += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(s);
+}
+
+const MAX_DSL_BYTES = 64 * 1024; // 64 KB cap on share-links / hash decodes
 
 $('#download-svg').addEventListener('click', () => {
   if (!lastSVG) return;
@@ -318,8 +368,13 @@ $('#copy-svg').addEventListener('click', async () => {
 });
 
 $('#copy-link').addEventListener('click', async () => {
-  const enc = btoa(String.fromCharCode(...new TextEncoder().encode(srcEl.value)));
-  // Build the canonical /tools/sketch/ URL even when iframed
+  const bytes = new TextEncoder().encode(srcEl.value);
+  if (bytes.length > MAX_DSL_BYTES) {
+    flashStatus('DSL too large to share-link', true);
+    return;
+  }
+  const enc = bytesToBase64(bytes);
+  // Build the canonical /tools/sketch/ URL even when iframed.
   const base = 'https://plinth.run/tools/sketch/';
   const url = base + '#d=' + enc;
   try { await navigator.clipboard.writeText(url); flashStatus('share link copied'); }
@@ -327,15 +382,22 @@ $('#copy-link').addEventListener('click', async () => {
 });
 
 function loadFromHash() {
-  if (location.hash.startsWith('#d=')) {
-    try {
-      const bytes = Uint8Array.from(atob(location.hash.substring(3)), (c) => c.charCodeAt(0));
-      srcEl.value = new TextDecoder().decode(bytes);
-      update();
-      return true;
-    } catch (e) {}
+  if (!location.hash.startsWith('#d=')) return false;
+  const data = location.hash.substring(3);
+  // base64 expands ~4/3, so a 64KB DSL → ~85KB hash; reject larger.
+  if (data.length > MAX_DSL_BYTES * 2) {
+    flashStatus('share link malformed (too large)', true);
+    return false;
   }
-  return false;
+  try {
+    const bytes = Uint8Array.from(atob(data), (c) => c.charCodeAt(0));
+    srcEl.value = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    update();
+    return true;
+  } catch (e) {
+    flashStatus('share link malformed', true);
+    return false;
+  }
 }
 
 if (!loadFromHash()) loadExample('plinth');
