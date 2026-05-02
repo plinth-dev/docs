@@ -1,6 +1,6 @@
 ---
-title: Bank-Grade Platform Architecture
-description: A reference architecture for enterprise teams running internal-tooling fleets on open-source, on-premise infrastructure.
+title: Reference architecture for bank-grade internal-tooling fleets
+description: A reference architecture for enterprise teams running internal-tooling fleets on open-source, on-premise infrastructure. Describes a v1.0 target; not all sections ship in Plinth v0.1.0.
 sidebar:
   label: Overview
   order: 1
@@ -8,6 +8,10 @@ tableOfContents:
   minHeadingLevel: 2
   maxHeadingLevel: 3
 ---
+
+:::note[v0.1.0 vs this document]
+This document describes the *v1.0 target* — the system you'd build if you were standing up a bank-grade internal platform from scratch. **Plinth v0.1.0 implements §14 (Cerbos), §20 (CloudNativePG), §25 (OpenTelemetry) end-to-end; the substrate chart and SDKs reference this architecture, not the whole of it.** The [v0.1.0 launch page](/launch/v0-1-0/) lists what ships today.
+:::
 
 ## How to read this document
 
@@ -124,7 +128,7 @@ The paired starter kits — [`starter-web`](https://github.com/plinth-dev/starte
 
 ---
 
-# Part I — Foundations
+## Part I — Foundations
 
 ## 1. Executive summary
 
@@ -202,23 +206,13 @@ The starter kits paired with this document close every item above explicitly.
 
 ## 4. Design principles
 
-These six principles govern every choice in this document. Where a section deviates from one, the deviation is named explicitly.
+The six commitments are stated normatively in the [manifesto](/manifesto/) — *zero standing trust*, *GitOps everything*, *immutable infrastructure*, *durable workflows*, *evidence by default*, *open source first*. They are the contract; this document is the *how*.
 
-1. **Zero standing trust.** No human or service has ambient privileges. Identity is established per request (users via the gateway, services via SPIFFE/mTLS). Secrets are time-bounded; admin actions are audited; production access is just-in-time.
-
-2. **GitOps everything.** The state of the platform is the state of git. A reconciler agent (Argo CD) applies the repo to the cluster; humans don't `kubectl apply`. Every change is reviewed in a PR, recorded in audit, reversible by `git revert`.
-
-3. **Immutable infrastructure.** Nodes are not patched; they are replaced. Cluster nodes have no SSH and no shell; configuration is declarative. Container images are built once, signed, and never mutated in flight.
-
-4. **Durable workflows.** Long-running, multi-step business processes (approvals, integrations, scheduled jobs) live in Temporal — not in cron + database tables. Code is the source of truth; correctness is testable.
-
-5. **Evidence by default.** Audit, traces, logs, metrics, and policy decisions are emitted from every component without per-module effort. The platform produces compliance evidence as a side effect of running.
-
-6. **Open source first.** Every choice in this document is permissively licensed open source. The platform must be operable indefinitely without recurring vendor cost. Commercial support is welcome but optional.
+Where a section deviates from one, the deviation is named explicitly in that section.
 
 ---
 
-# Part II — Reference Architecture
+## Part II — Reference Architecture
 
 ## 5. Logical architecture overview
 
@@ -503,7 +497,7 @@ External traffic terminates at the perimeter firewall, which forwards to a pool 
 
 ---
 
-# Part III — Identity, Authorization, Secrets, PKI
+## Part III — Identity, Authorization, Secrets, PKI
 
 ## 13. Identity — Ory stack
 
@@ -637,7 +631,7 @@ The combined model means: a misconfigured pod that ends up in the wrong namespac
 
 ---
 
-# Part IV — Application Platform
+## Part IV — Application Platform
 
 ## 18. Workflow engine — Temporal
 
@@ -780,13 +774,13 @@ Decisions:
 
 ---
 
-# Part V — Observability and Audit
+## Part V — Observability and Audit
 
 ## 25. OpenTelemetry instrumentation standard
 
 Every module emits **OTLP** (OpenTelemetry Protocol) telemetry from day one — traces, metrics, logs. The starter kits wire the SDKs; module authors do not opt in.
 
-- **Backend (Go)**: `go.opentelemetry.io/otel` SDK; auto-instrumentation for Fiber, GORM, gRPC, HTTP clients.
+- **Backend (Go)**: `go.opentelemetry.io/otel` SDK; auto-instrumentation for chi, pgx, gRPC, HTTP clients.
 - **Frontend (Next.js)**: `@opentelemetry/sdk-trace-web` + `@vercel/otel` for server actions; browser-side traces ship to a public collector endpoint behind Oathkeeper.
 - **Collector**: an **OpenTelemetry Collector** deployment per cluster, deployed as a DaemonSet (for node-local low-latency receive) plus a gateway tier (for processing/batching/routing).
 
@@ -966,7 +960,7 @@ Policies live in a `k8s-policies` repo; CI tests them on a kind cluster; Argo CD
 
 ---
 
-# Part VI — Developer Experience
+## Part VI — Developer Experience
 
 ## 37. Source control — GitLab CE
 
@@ -1190,7 +1184,7 @@ ADRs follow the **Michael Nygard** format: Context, Decision, Status, Consequenc
 
 ---
 
-# Part VII — The starter kits
+## Part VII — The starter kits
 
 ## 45. Frontend — `starter-web`
 
@@ -1234,22 +1228,23 @@ A Next.js 16 + React 19 module template that ships every pattern an enterprise t
 
 ## 46. Backend — `starter-api`
 
-Go 1.23 + Fiber v2, structured for an enterprise-grade module.
+Go 1.25 + chi, structured for an enterprise-grade module. (The shipped `starter-api` repo wires every Plinth Go SDK package into one working service.)
 
 ### 46.1 Stack
 
 | Layer | Choice |
 | --- | --- |
-| Language | Go 1.23 |
-| HTTP | Fiber v2 |
-| ORM | sqlc + pgx (no GORM, no AutoMigrate) |
+| Language | Go 1.25 |
+| HTTP | chi |
+| Database | sqlc + pgx (no GORM, no AutoMigrate) |
 | Migrations | golang-migrate |
 | Validation | go-playground/validator |
-| Logger | zerolog |
-| Errors | custom `apperrors` package + RFC 7807 problem+json |
-| Workflow | Temporal Go SDK |
-| Cerbos | shared `cerbosclient` lib |
-| OTel | `go.opentelemetry.io/otel` |
+| Logger | log/slog (stdlib) with JSON handler |
+| Errors | `sdk-go/errors` + RFC 7807 problem+json |
+| Workflow | Temporal Go SDK *(v1.0 target — not in v0.1.0)* |
+| Cerbos | `sdk-go/authz` |
+| OTel | `sdk-go/otel` |
+| Audit | `sdk-go/audit` |
 | Test (unit) | go test |
 | Test (integration) | testcontainers-go |
 | API spec | swaggo OpenAPI generation |
@@ -1327,7 +1322,7 @@ CI publishes a signed bundle to MinIO. Argo CD watches the bundle reference; Cer
 
 ---
 
-# Part VIII — Compliance and Operations
+## Part VIII — Compliance and Operations
 
 ## 49. Compliance mapping
 
@@ -1439,7 +1434,7 @@ Rotation jobs are Temporal workflows in a **`platform-rotation`** module — dur
 
 ---
 
-# Part IX — Roadmap
+## Part IX — Roadmap
 
 A 28-week plan in five phases. Phases overlap where dependencies allow; the roadmap below shows critical-path durations.
 
@@ -1562,7 +1557,7 @@ A 28-week plan in five phases. Phases overlap where dependencies allow; the road
 
 ---
 
-# Part X — Diagrams
+## Part X — Diagrams
 
 The diagrams below are reference Mermaid sources. Animated equivalents appear in `explorer.html`. Source `.mmd` files are in the `diagrams/` subdirectory and lint-checked in CI.
 

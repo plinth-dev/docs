@@ -12,7 +12,7 @@ export default defineConfig({
       title: "Plinth",
       description:
         "Open-source platform foundation for enterprise teams running fleets of internal-tooling modules.",
-      // Wordmark only — Plinth in Spectral Medium reads as a logo of its own.
+      // Wordmark only — "Plinth" in IBM Plex Sans reads as a logo of its own.
       // (No image logo file; Starlight falls back to the title text.)
       favicon: "/favicon.svg",
       social: [
@@ -26,9 +26,14 @@ export default defineConfig({
         baseUrl: "https://github.com/plinth-dev/docs/edit/main/",
       },
       lastUpdated: true,
-      // OG image lands in Phase F — until then no og:image meta is set
-      // (better than a 404'd image). Re-enable when /og.png ships.
+      // og:image lands with the default OG card in Wave 4 once huashu-design
+      // produces /og-default.png. Until then no og:image is set (better than
+      // a 404'd image).
       head: [
+        {
+          tag: "meta",
+          attrs: { name: "theme-color", content: "#FBFBF9" },
+        },
         {
           tag: "link",
           attrs: { rel: "preconnect", href: "https://fonts.googleapis.com" },

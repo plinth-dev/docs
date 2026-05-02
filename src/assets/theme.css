@@ -8,7 +8,7 @@
 :root {
   --sl-font: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --sl-font-system: var(--sl-font);
-  --sl-font-system-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sl-font-system-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --sl-content-width: 60rem;
   --sl-line-height: 1.55;

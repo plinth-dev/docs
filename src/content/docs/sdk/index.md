@@ -10,27 +10,31 @@ The Plinth SDK is two language families that encode the platform contracts. Modu
 
 ## Go — `github.com/plinth-dev/sdk-go/*`
 
-| Package | Responsibility |
-| --- | --- |
-| [`authz`](/sdk/go/authz/) | Cerbos PDP client wrapper with explicit `Decision` and fail-closed semantics. |
-| [`errors`](/sdk/go/errors/) | Typed error vocabulary; sentinel errors via `errors.Is`; RFC 7807 mapping. |
-| [`audit`](/sdk/go/audit/) | Emit CloudEvents-shaped audit events to a pluggable transport (NATS by default). Non-blocking. |
-| [`health`](/sdk/go/health/) | Dependency probe registry with parallel execution and per-dep status JSON. |
-| [`otel`](/sdk/go/otel/) | OpenTelemetry SDK initialisation with standard resource attributes. |
-| [`paginate`](/sdk/go/paginate/) | Cursor + offset pagination types and parsers; allow-list-based sort safety. |
-| [`vault`](/sdk/go/vault/) | Secret reader: `/run/secrets/<name>` first, env var fallback, in-memory cache. |
+All seven packages are tagged `v0.1.0` and importable today via `go get github.com/plinth-dev/sdk-go/<pkg>@v0.1.0`.
+
+| Package | Status | Responsibility |
+| --- | --- | --- |
+| [`authz`](/sdk/go/authz/) | *v0.1.0* | Cerbos PDP client wrapper with explicit `Decision` and fail-closed semantics. |
+| [`errors`](/sdk/go/errors/) | *v0.1.0* | Typed error vocabulary; sentinel errors via `errors.Is`; RFC 7807 mapping. |
+| [`audit`](/sdk/go/audit/) | *v0.1.0* | Emit CloudEvents-shaped audit events to a pluggable transport (NATS by default). Non-blocking. |
+| [`health`](/sdk/go/health/) | *v0.1.0* | Dependency probe registry with parallel execution and per-dep status JSON. |
+| [`otel`](/sdk/go/otel/) | *v0.1.0* | OpenTelemetry SDK initialisation with standard resource attributes. |
+| [`paginate`](/sdk/go/paginate/) | *v0.1.0* | Cursor + offset pagination types and parsers; allow-list-based sort safety. |
+| [`vault`](/sdk/go/vault/) | *v0.1.0* | Secret reader: `/run/secrets/<name>` first, env var fallback, in-memory cache. |
 
 ## TypeScript — `@plinth-dev/*`
 
-| Package | Responsibility |
-| --- | --- |
-| [`authz`](/sdk/ts/authz/) | Server-only Cerbos gRPC wrapper; mirrors the Go SDK semantics. |
-| [`authz-react`](/sdk/ts/authz-react/) | React `<PermissionsProvider>` + `usePermissions()` + `<Can>`; batched-check-at-layout pattern. |
-| [`api-client`](/sdk/ts/api-client/) | Typed server-only fetch wrapper; never throws on HTTP errors; retries on 5xx/429. |
-| [`forms`](/sdk/ts/forms/) | Server-action forms with Zod validation; `<FormWrapper>` + `<FormField>`. |
-| [`tables`](/sdk/ts/tables/) | Headless data tables with URL state via `nuqs`. |
-| [`otel-web`](/sdk/ts/otel-web/) | Browser OpenTelemetry SDK init with auto-instrumentations. |
-| [`env`](/sdk/ts/env/) | Zod-schema-validated env vars; fail-fast at module load. |
+All seven packages are published to npm at `0.1.0` and installable via `pnpm add @plinth-dev/<pkg>`.
+
+| Package | Status | Responsibility |
+| --- | --- | --- |
+| [`authz`](/sdk/ts/authz/) | *0.1.0 on npm* | Server-only Cerbos gRPC wrapper; mirrors the Go SDK semantics. |
+| [`authz-react`](/sdk/ts/authz-react/) | *0.1.0 on npm* | React `<PermissionsProvider>` + `usePermissions()` + `<Can>`; batched-check-at-layout pattern. |
+| [`api-client`](/sdk/ts/api-client/) | *0.1.0 on npm* | Typed server-only fetch wrapper; never throws on HTTP errors; retries on 5xx/429. |
+| [`forms`](/sdk/ts/forms/) | *0.1.0 on npm* | Server-action forms with Zod validation; `<FormWrapper>` + `<FormField>`. |
+| [`tables`](/sdk/ts/tables/) | *0.1.0 on npm* | Headless data tables with URL state via `nuqs`. |
+| [`otel-web`](/sdk/ts/otel-web/) | *0.1.0 on npm* | Browser OpenTelemetry SDK init with auto-instrumentations. |
+| [`env`](/sdk/ts/env/) | *0.1.0 on npm* | Zod-schema-validated env vars; fail-fast at module load. |
 
 ## Where to start
 
@@ -40,4 +44,4 @@ The four most load-bearing packages — read these first if you only read four:
 - [`@plinth-dev/authz-react`](/sdk/ts/authz-react/) — the client-side companion (batched-check-at-layout)
 - [`sdk-go/errors`](/sdk/go/errors/) — the wire-stable error vocabulary every backend speaks
 
-Implementation lands per-package, semver-tagged starting `v0.1.0`. See the [roadmap](https://github.com/plinth-dev/.github/blob/main/ROADMAP.md) for the current state.
+API contracts are frozen for the 0.x line; breaking changes batch into 0.2.0. See the [v0.1.0 launch](/launch/v0-1-0/) for a full ship list.

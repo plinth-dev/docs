@@ -10,6 +10,10 @@ A working internal-tool that demonstrates the full Plinth stack on the canonical
 
 **Source:** [github.com/plinth-dev/example-access-requests](https://github.com/plinth-dev/example-access-requests).
 
+:::note[What this example fakes for the walkthrough]
+The example uses a **dev cookie shim** for identity (sign in as `alice`, `bob`, etc.) so it stands up on a fresh `kind` cluster without an external IdP. In production the same SDK calls sit behind Authentik / Ory Kratos via Oathkeeper — the *application code does not change*; only the upstream issuer does. See §13 of the [architecture doc](/architecture/) for the production path.
+:::
+
 ## What you'll see
 
 | Surface | Plinth SDK |
