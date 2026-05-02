@@ -59,7 +59,7 @@ export default defineConfig({
           items: [
             { label: "What is Plinth", slug: "index" },
             { label: "Manifesto", slug: "manifesto" },
-            { label: "Try it in 60 minutes", slug: "start/try-it" },
+            { label: "Stand it up", slug: "start/try-it" },
             {
               label: "v0.1.0 launch",
               slug: "launch/v0-1-0",
