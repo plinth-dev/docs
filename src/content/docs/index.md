@@ -47,7 +47,7 @@ Eight repositories, all v0.1.0, all MIT.
 ## Where to go next
 
 - **Curious about the opinions?** [Read the manifesto](/manifesto/) — six commitments that shape every default.
-- **Want to see the architecture?** [Architecture overview](/architecture/) and the [interactive explorer](/explorer.html).
+- **Want to see the architecture?** [Architecture overview](/architecture/) — full reference document.
 - **Building on Plinth?** Start with the [SDK design docs](/sdk/).
 - **Try the tools** — [Plinth Sketch](/tools/sketch/) is live in your browser, no signup.
 - **Standing the platform up?** Follow the [tutorial](/start/try-it/).

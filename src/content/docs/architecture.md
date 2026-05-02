@@ -27,8 +27,6 @@ Five audiences, five entry points:
 | **Information security** | Part III, §33 SIEM, §49 Compliance mapping |
 | **Application developers** | Part VI, Part VII |
 
-The companion artifact [`explorer.html`](/explorer.html) is an interactive walkthrough designed for stakeholder briefings. It is self-contained and prints cleanly to PDF.
-
 The paired starter kits — [`starter-web`](https://github.com/plinth-dev/starter-web) (Next.js frontend) and [`starter-api`](https://github.com/plinth-dev/starter-api) (Go backend) — implement the patterns in this document. They are clone-ready scaffolds for new modules.
 
 ---
@@ -1559,7 +1557,7 @@ A 28-week plan in five phases. Phases overlap where dependencies allow; the road
 
 ## Part X — Diagrams
 
-The diagrams below are reference Mermaid sources. Animated equivalents appear in `explorer.html`. Source `.mmd` files are in the `diagrams/` subdirectory and lint-checked in CI.
+The diagrams below are reference Mermaid sources. Source `.mmd` files are in the `diagrams/` subdirectory and lint-checked in CI.
 
 ## 62. Logical architecture diagram
 
@@ -1888,4 +1886,4 @@ flowchart LR
 
 Released under MIT. Use, fork, adapt — no obligations.
 
-*End of document. Companion: `explorer.html` in this folder.*
+*End of document.*
